@@ -283,7 +283,6 @@ Log.i("TAG", "onCancel is called");
         events = null;
         channel.setMethodCallHandler(null);
         eventChannel.setStreamHandler(null);
-        geofirePlugin = null;
         pluginInit(flutterPluginBinding.getBinaryMessenger());
     }
 

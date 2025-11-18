@@ -67,8 +67,10 @@ public class GeofirePlugin implements FlutterPlugin,MethodCallHandler, EventChan
             geoFire = new GeoFire(databaseReference);
 
             if (geoFire.getDatabaseReference() != null) {
+                        Log.i("TAG", geoFire.getDatabaseReference().toString());
                 result.success(true);
             } else
+                Log.i("TAG", "Database Reference is FALSE");
                 result.success(false);
         } else if (call.method.equals("setLocation")) {
 
@@ -140,7 +142,10 @@ public class GeofirePlugin implements FlutterPlugin,MethodCallHandler, EventChan
         } else if (call.method.equals("stopListener")) {
 
             if (geoQuery != null) {
+                Log.i("TAG", "stopListener, geoQuery is not NULL");
                 geoQuery.removeAllListeners();
+            } else {
+                Log.i("TAG", "stopListener, geoQuery is NULL");
             }
 
             result.success(true);
@@ -274,7 +279,7 @@ public class GeofirePlugin implements FlutterPlugin,MethodCallHandler, EventChan
 
     @Override
     public void onCancel(Object o) {
-
+Log.i("TAG", "onCancel is called");
         geoQuery.removeAllListeners();
         events = null;
 
@@ -282,11 +287,15 @@ public class GeofirePlugin implements FlutterPlugin,MethodCallHandler, EventChan
 
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding binding) {
+
+        Log.i("TAG", "onAttachedToEngine is called");
+        
         pluginInit(binding.getBinaryMessenger());
     }
 
     @Override
     public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
+        Log.i("TAG", "onDetachedFromEngine is called");
         channel.setMethodCallHandler(null);
         eventChannel.setStreamHandler(null);
     }

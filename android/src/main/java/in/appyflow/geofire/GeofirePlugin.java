@@ -144,6 +144,16 @@ public class GeofirePlugin implements FlutterPlugin,MethodCallHandler, EventChan
             }
 
             result.success(true);
+        } else if (call.method.equals("stopListener1")) {
+               
+            geoQuery.removeAllListeners();
+
+            result.success(true);
+        } else if (call.method.equals("stopListener2")) {
+
+            geoFire = null;
+            
+            result.success(true);
         } else {
             result.notImplemented();
         }

@@ -36,7 +36,7 @@ public class GeofirePlugin implements FlutterPlugin,MethodCallHandler, EventChan
     static MethodChannel channel;
     static EventChannel eventChannel;
     private EventChannel.EventSink events;
-    private FlutterPluginBinding flutterPluginBinding;
+    // private FlutterPluginBinding flutterPluginBinding;
     
     /**
      * Plugin registration.
@@ -65,7 +65,7 @@ public class GeofirePlugin implements FlutterPlugin,MethodCallHandler, EventChan
         if (call.method.equals("GeoFire.start")) {
 
             databaseReference = FirebaseDatabase.getInstance().getReference(call.argument("path").toString());
-            geoFire = new GeoFire(databaseReference);
+            geoFire = GeoFire(databaseReference);
 
             if (geoFire.getDatabaseReference() != null) {
                 result.success(true);
@@ -281,20 +281,20 @@ public class GeofirePlugin implements FlutterPlugin,MethodCallHandler, EventChan
 Log.i("TAG", "onCancel is called");
         geoQuery.removeAllListeners();
         events = null;
-        channel.setMethodCallHandler(null);
-        eventChannel.setStreamHandler(null);
-        pluginInit(flutterPluginBinding.getBinaryMessenger());
+        // channel.setMethodCallHandler(null);
+        // eventChannel.setStreamHandler(null);
+        // pluginInit(flutterPluginBinding.getBinaryMessenger());
     }
 
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding binding) {
-        flutterPluginBinding = binding;
+        // flutterPluginBinding = binding;
         pluginInit(binding.getBinaryMessenger());
     }
 
     @Override
     public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
-        flutterPluginBinding = null;
+        // flutterPluginBinding = null;
         channel.setMethodCallHandler(null);
         eventChannel.setStreamHandler(null);
     }

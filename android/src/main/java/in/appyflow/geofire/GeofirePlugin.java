@@ -65,7 +65,7 @@ public class GeofirePlugin implements FlutterPlugin,MethodCallHandler, EventChan
         if (call.method.equals("GeoFire.start")) {
 
             databaseReference = FirebaseDatabase.getInstance().getReference(call.argument("path").toString());
-            geoFire = GeoFire(databaseReference);
+            geoFire = new GeoFire(databaseReference);
 
             if (geoFire.getDatabaseReference() != null) {
                 result.success(true);
@@ -281,6 +281,7 @@ public class GeofirePlugin implements FlutterPlugin,MethodCallHandler, EventChan
 Log.i("TAG", "onCancel is called");
         geoQuery.removeAllListeners();
         events = null;
+        geoFire = null;
         // channel.setMethodCallHandler(null);
         // eventChannel.setStreamHandler(null);
         // pluginInit(flutterPluginBinding.getBinaryMessenger());

@@ -36,7 +36,8 @@ public class GeofirePlugin implements FlutterPlugin,MethodCallHandler, EventChan
     static MethodChannel channel;
     static EventChannel eventChannel;
     private EventChannel.EventSink events;
-
+    private FlutterPluginBinding flutterPluginBinding;
+    
     /**
      * Plugin registration.
      */
@@ -283,17 +284,20 @@ Log.i("TAG", "onCancel is called");
         channel.setMethodCallHandler(null);
         eventChannel.setStreamHandler(null);
         geofirePlugin = null;
-        pluginInit(FlutterPluginBinding binding.getBinaryMessenger());
+        pluginInit(flutterPluginBinding.getBinaryMessenger());
     }
 
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding binding) {
+        flutterPluginBinding = binding;
         pluginInit(binding.getBinaryMessenger());
     }
 
     @Override
     public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
+        flutterPluginBinding = null;
         channel.setMethodCallHandler(null);
         eventChannel.setStreamHandler(null);
     }
+    
 }

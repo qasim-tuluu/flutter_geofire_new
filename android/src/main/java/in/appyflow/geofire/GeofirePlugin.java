@@ -157,7 +157,7 @@ public class GeofirePlugin implements FlutterPlugin,MethodCallHandler, EventChan
             result.success(true);
         } else if (call.method.equals("stopListener2")) {
 
-            geoFire.cancel();
+            // geoFire.cancel();
             
             result.success(true);
         } else {

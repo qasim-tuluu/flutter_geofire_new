@@ -281,7 +281,7 @@ public class GeofirePlugin implements FlutterPlugin,MethodCallHandler, EventChan
 Log.i("TAG", "onCancel is called");
         geoQuery.removeAllListeners();
         events = null;
-        geoFire = null;
+        geoQuery = null;
         // channel.setMethodCallHandler(null);
         // eventChannel.setStreamHandler(null);
         // pluginInit(flutterPluginBinding.getBinaryMessenger());

@@ -271,6 +271,12 @@ public class GeofirePlugin implements FlutterPlugin,MethodCallHandler, EventChan
         }
     }
 
+
+    private void setNewLocation(double latitude, double longitude, double radius) {
+    geoQuery.setCenter(new GeoLocation(latitude, longitude));
+        geoQuery.setRadius(radius);
+    }
+    
     @Override
     public void onListen(Object o, EventChannel.EventSink eventSink) {
         events = eventSink;

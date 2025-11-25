@@ -80,4 +80,13 @@ class Geofire {
     }
     return _queryAtLocation;
   }
+
+    static Future<bool?> setNewLocation(
+      double lat, double lng, double radius) {
+    final bool? isSet = await _channel.invokeMethod('setNewLocation',
+        <String, dynamic>{"lat": lat, "lng": lng, "radius": radius});
+    return isSet;  
+  }
+
+  
 }

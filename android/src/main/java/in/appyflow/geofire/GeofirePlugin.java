@@ -160,8 +160,29 @@ public class GeofirePlugin implements FlutterPlugin,MethodCallHandler, EventChan
             
             result.success(true);
         } else if (call.method.equals("setNewLocation")) {
-       geoQuery.setCenter(new GeoLocation(Double.parseDouble(call.argument("lat").toString()), Double.parseDouble(call.argument("lng").toString())));
-            qeoQuery.setRadius(Double.parseDouble(call.argument("radius").toString()));
+
+
+            
+       // geoQuery.setCenter(new GeoLocation(Double.parseDouble(call.argument("lat").toString()), Double.parseDouble(call.argument("lng").toString())));
+       //      geoQuery.setRadius(Double.parseDouble(call.argument("radius").toString()));
+
+            //             geoFire.setLocation(new GeoLocation(Double.parseDouble(call.argument("lat").toString()), Double.parseDouble(call.argument("lng").toString())), new GeoFire.CompletionListener() {
+            //     @Override
+            //     public void onComplete(String key, DatabaseError error) {
+
+            //         if (error != null) {
+            //             result.success(false);
+            //         } else {
+            //             result.success(true);
+            //         }
+
+            //     }
+            // });
+
+            geoQuery.setLocation(new GeoLocation(Double.parseDouble(call.argument("lat").toString()), Double.parseDouble(call.argument("lng").toString())), Double.parseDouble(call.argument("radius").toString()));
+        
+        
+        
         } else {
             result.notImplemented();
         }
@@ -275,10 +296,10 @@ public class GeofirePlugin implements FlutterPlugin,MethodCallHandler, EventChan
     }
 
 
-    private void setNewLocation(double latitude, double longitude, double radius) {
-    geoQuery.setCenter(new GeoLocation(latitude, longitude));
-        geoQuery.setRadius(radius);
-    }
+    // private void setNewLocation(double latitude, double longitude, double radius) {
+    // geoQuery.setCenter(new GeoLocation(latitude, longitude));
+    //     geoQuery.setRadius(radius);
+    // }
     
     @Override
     public void onListen(Object o, EventChannel.EventSink eventSink) {

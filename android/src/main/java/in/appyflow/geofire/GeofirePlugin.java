@@ -36,12 +36,10 @@ public class GeofirePlugin implements FlutterPlugin,MethodCallHandler, EventChan
     static MethodChannel channel;
     static EventChannel eventChannel;
     private EventChannel.EventSink events;
-    // private FlutterPluginBinding flutterPluginBinding;
     
     /**
      * Plugin registration.
      */
-
     public static void pluginInit(BinaryMessenger messenger){
         GeofirePlugin geofirePlugin = new GeofirePlugin();
 
@@ -52,10 +50,6 @@ public class GeofirePlugin implements FlutterPlugin,MethodCallHandler, EventChan
         eventChannel.setStreamHandler(geofirePlugin);
 
     }
-
-//    public static void registerWith(Registrar registrar) {
-//        pluginInit(registrar.messenger());
-//    }
 
     @Override
     public void onMethodCall(MethodCall call, final Result result) {
@@ -71,56 +65,48 @@ public class GeofirePlugin implements FlutterPlugin,MethodCallHandler, EventChan
                 result.success(true);
             } else
                 result.success(false);
+            
         } else if (call.method.equals("setLocation")) {
 
             geoFire.setLocation(call.argument("id").toString(), new GeoLocation(Double.parseDouble(call.argument("lat").toString()), Double.parseDouble(call.argument("lng").toString())), new GeoFire.CompletionListener() {
+                
                 @Override
                 public void onComplete(String key, DatabaseError error) {
-
                     if (error != null) {
                         result.success(false);
                     } else {
                         result.success(true);
                     }
-
                 }
             });
-
 
         } else if (call.method.equals("removeLocation")) {
 
             geoFire.removeLocation(call.argument("id").toString(), new GeoFire.CompletionListener() {
+                
                 @Override
                 public void onComplete(String key, DatabaseError error) {
-
                     if (error != null) {
                         result.success(false);
                     } else {
                         result.success(true);
                     }
-
                 }
             });
-
 
         } else if (call.method.equals("getLocation")) {
 
             geoFire.getLocation(call.argument("id").toString(), new LocationCallback() {
+                
                 @Override
                 public void onLocationResult(String key, GeoLocation location) {
                     HashMap<String, Object> map = new HashMap<>();
                     if (location != null) {
-
-
                         map.put("lat", location.latitude);
                         map.put("lng", location.longitude);
                         map.put("error", null);
-
                     } else {
-
-
                         map.put("error", String.format("There is no location for key %s in GeoFire", key));
-
                     }
 
                     result.success(map);
@@ -130,59 +116,24 @@ public class GeofirePlugin implements FlutterPlugin,MethodCallHandler, EventChan
                 public void onCancelled(DatabaseError databaseError) {
                     HashMap<String, Object> map = new HashMap<>();
                     map.put("error", "There was an error getting the GeoFire location: " + databaseError);
-
                     result.success(map);
                 }
             });
 
-
         } else if (call.method.equals("queryAtLocation")) {
             geoFireArea(Double.parseDouble(call.argument("lat").toString()), Double.parseDouble(call.argument("lng").toString()), result, Double.parseDouble(call.argument("radius").toString()));
+        
         } else if (call.method.equals("stopListener")) {
 
             if (geoQuery != null) {
-                Log.i("TAG", "stopListener, geoQuery is not NULL");
                 geoQuery.removeAllListeners();
-            } else {
-                Log.i("TAG", "stopListener, geoQuery is NULL");
             }
-
             result.success(true);
-        } else if (call.method.equals("stopListener1")) {
-               
-            geoQuery.removeAllListeners();
-            events = null;
-
-            result.success(true);
-        } else if (call.method.equals("stopListener2")) {
-
-            // geoFire.cancel();
             
-            result.success(true);
         } else if (call.method.equals("setNewLocation")) {
 
-
-            
-       // geoQuery.setCenter(new GeoLocation(Double.parseDouble(call.argument("lat").toString()), Double.parseDouble(call.argument("lng").toString())));
-       //      geoQuery.setRadius(Double.parseDouble(call.argument("radius").toString()));
-
-            //             geoFire.setLocation(new GeoLocation(Double.parseDouble(call.argument("lat").toString()), Double.parseDouble(call.argument("lng").toString())), new GeoFire.CompletionListener() {
-            //     @Override
-            //     public void onComplete(String key, DatabaseError error) {
-
-            //         if (error != null) {
-            //             result.success(false);
-            //         } else {
-            //             result.success(true);
-            //         }
-
-            //     }
-            // });
-
             geoQuery.setLocation(new GeoLocation(Double.parseDouble(call.argument("lat").toString()), Double.parseDouble(call.argument("lng").toString())), Double.parseDouble(call.argument("radius").toString()));
-        
-        
-        
+                
         } else {
             result.notImplemented();
         }
@@ -218,9 +169,7 @@ public class GeofirePlugin implements FlutterPlugin,MethodCallHandler, EventChan
                     } else {
                         geoQuery.removeAllListeners();
                     }
-
                     arrayListKeys.add(key);
-
                 }
 
                 @Override
@@ -228,7 +177,6 @@ public class GeofirePlugin implements FlutterPlugin,MethodCallHandler, EventChan
                     arrayListKeys.remove(key);
 
                     if (events != null) {
-
                         hashMap.clear();
                         hashMap.put("callBack", "onKeyExited");
                         hashMap.put("key", key);
@@ -236,7 +184,6 @@ public class GeofirePlugin implements FlutterPlugin,MethodCallHandler, EventChan
                     } else {
                         geoQuery.removeAllListeners();
                     }
-
                 }
 
                 @Override
@@ -244,49 +191,37 @@ public class GeofirePlugin implements FlutterPlugin,MethodCallHandler, EventChan
 
                     if (events != null) {
                         hashMap.clear();
-
                         hashMap.put("callBack", "onKeyMoved");
                         hashMap.put("key", key);
                         hashMap.put("latitude", location.latitude);
                         hashMap.put("longitude", location.longitude);
-
                         events.success(hashMap);
                     } else {
                         geoQuery.removeAllListeners();
                     }
-
                 }
 
                 @Override
                 public void onGeoQueryReady() {
-//                    geoQuery.removeAllListeners();
-//                    result.success(arrayListKeys);
 
                     if (events != null) {
                         hashMap.clear();
-
                         hashMap.put("callBack", "onGeoQueryReady");
                         hashMap.put("result", arrayListKeys);
-
                         events.success(hashMap);
-
                     } else {
                         geoQuery.removeAllListeners();
                     }
-
                 }
 
                 @Override
                 public void onGeoQueryError(DatabaseError error) {
 
                     if (events != null) {
-
                         events.error("Error ", "GeoQueryError", error);
                     } else {
                         geoQuery.removeAllListeners();
                     }
-
-
                 }
             });
         } catch (Exception e) {
@@ -294,12 +229,6 @@ public class GeofirePlugin implements FlutterPlugin,MethodCallHandler, EventChan
             result.error("Error ", "General Error", e);
         }
     }
-
-
-    // private void setNewLocation(double latitude, double longitude, double radius) {
-    // geoQuery.setCenter(new GeoLocation(latitude, longitude));
-    //     geoQuery.setRadius(radius);
-    // }
     
     @Override
     public void onListen(Object o, EventChannel.EventSink eventSink) {
@@ -308,24 +237,19 @@ public class GeofirePlugin implements FlutterPlugin,MethodCallHandler, EventChan
 
     @Override
     public void onCancel(Object o) {
-Log.i("TAG", "onCancel is called");
+        Log.i("TAG", "onCancel is called");
         geoQuery.removeAllListeners();
         events = null;
         geoQuery = null;
-        // channel.setMethodCallHandler(null);
-        // eventChannel.setStreamHandler(null);
-        // pluginInit(flutterPluginBinding.getBinaryMessenger());
     }
 
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding binding) {
-        // flutterPluginBinding = binding;
         pluginInit(binding.getBinaryMessenger());
     }
 
     @Override
     public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
-        // flutterPluginBinding = null;
         channel.setMethodCallHandler(null);
         eventChannel.setStreamHandler(null);
     }

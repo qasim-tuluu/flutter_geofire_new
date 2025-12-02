@@ -39,18 +39,6 @@ class Geofire {
     return isSet;
   }
 
-    static Future<bool?> stopListener1() async {
-    final bool? isSet =
-        await _channel.invokeMethod('stopListener1', <String, dynamic>{});
-    return isSet;
-  }
-
-    static Future<bool?> stopListener2() async {
-    final bool? isSet =
-        await _channel.invokeMethod('stopListener2', <String, dynamic>{});
-    return isSet;
-  }
-
   static Future<Map<String, dynamic>> getLocation(String id) async {
     final Map<dynamic, dynamic> response = await (_channel
         .invokeMethod('getLocation', <String, dynamic>{"id": id}));
@@ -61,8 +49,6 @@ class Geofire {
       location[key] = value;
     });
 
-    // print(location);
-
     return location;
   }
 
@@ -70,14 +56,13 @@ class Geofire {
       double lat, double lng, double radius) {
     _channel.invokeMethod('queryAtLocation',
         {"lat": lat, "lng": lng, "radius": radius}).then((result) {
-      // print("result" + result);
     }).catchError((error) {
-      // print("Error " + error);
     });
 
     if (_queryAtLocation == null) {
       _queryAtLocation = _stream.receiveBroadcastStream();
     }
+    
     return _queryAtLocation;
   }
 
@@ -88,5 +73,4 @@ class Geofire {
     return isSet;  
   }
 
-  
 }

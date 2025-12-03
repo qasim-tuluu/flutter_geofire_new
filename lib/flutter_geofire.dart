@@ -39,6 +39,12 @@ class Geofire {
     return isSet;
   }
 
+  static Future<bool?> stopListenerDemo() async {
+    final bool? isSet =
+        await _channel.invokeMethod('stopListenerDemo', <String, dynamic>{});
+    return isSet;
+  }
+
   static Future<Map<String, dynamic>> getLocation(String id) async {
     final Map<dynamic, dynamic> response = await (_channel
         .invokeMethod('getLocation', <String, dynamic>{"id": id}));

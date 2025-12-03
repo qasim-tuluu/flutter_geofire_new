@@ -130,6 +130,15 @@ public class GeofirePlugin implements FlutterPlugin,MethodCallHandler, EventChan
             }
             result.success(true);
             
+        } else if (call.method.equals("stopListenerDemo")) {
+
+
+                geoQuery.removeAllListeners();
+                events = null;
+                geoQuery = null;
+
+            result.success(true);
+            
         } else if (call.method.equals("setNewLocation")) {
 
             geoQuery.setLocation(new GeoLocation(Double.parseDouble(call.argument("lat").toString()), Double.parseDouble(call.argument("lng").toString())), Double.parseDouble(call.argument("radius").toString()));

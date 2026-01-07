@@ -128,8 +128,11 @@ public class SwiftGeofirePlugin: NSObject, FlutterPlugin, FlutterStreamHandler {
         
         let location:CLLocation = CLLocation(latitude: CLLocationDegrees(lat), longitude: CLLocationDegrees(lng))
         
-        circleQuery = geoFire?.query(at: location, withRadius: radius)
-    
+        if let query = circleQuery {
+        query.center = location
+        query.radius = radius
+        print("GeoQuery criteria updated.")
+    }
     }
     
     

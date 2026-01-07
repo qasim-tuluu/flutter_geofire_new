@@ -120,6 +120,17 @@ public class SwiftGeofirePlugin: NSObject, FlutterPlugin, FlutterStreamHandler {
         
         
     }
+    else if(call.method.elementsEqual("setNewLocation")){
+        
+        let lat = arguements!["lat"] as! Double
+        let lng = arguements!["lng"] as! Double
+        let radius = arguements!["radius"] as! Double
+        
+        let location:CLLocation = CLLocation(latitude: CLLocationDegrees(lat), longitude: CLLocationDegrees(lng))
+        
+        circleQuery = geoFire?.query(at: location, withRadius: radius)
+    
+    }
     
     
     if(call.method.elementsEqual("queryAtLocation")){
@@ -201,7 +212,9 @@ public class SwiftGeofirePlugin: NSObject, FlutterPlugin, FlutterStreamHandler {
   }
 
   public func onCancel(withArguments arguments: Any?) -> FlutterError? {
+      circleQuery?.removeAllObservers()
       eventSink = nil
+      circleQuery = nil
       return nil
     }
 
